@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import { Login, SignUp } from "./pages/accounts";
-import { Error } from "./pages/Error";
+import { Login, SignUp, PasswordReset } from "@pages/accounts";
+import { Error } from "@pages/Error";
 
 function App() {
     return (
@@ -10,6 +10,7 @@ function App() {
                 <Route index element={<Error />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SignUp />} />
+                <Route path="password/reset" element={<PasswordReset />} />
             </Route>
             <Route path="*" element={<Error />} />
         </Routes>

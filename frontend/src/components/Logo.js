@@ -1,4 +1,4 @@
-import S from "../Assets/pic/Logo.png";
+import S from "@assets/pic/Logo.png";
 import styled from "styled-components";
 
 const Logo = styled.img.attrs({ src: S })`

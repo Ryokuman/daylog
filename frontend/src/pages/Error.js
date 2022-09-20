@@ -1,4 +1,4 @@
-import { Typography, StyledLink } from "../components";
+import { Typography, StyledLink } from "@components";
 
 function Error() {
     return (

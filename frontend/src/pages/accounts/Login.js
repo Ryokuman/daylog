@@ -1,4 +1,4 @@
-import * as S from "../../components";
+import * as S from "@components";
 import { useState } from "react";
 
 function LoginCard() {
@@ -39,7 +39,7 @@ function LoginCard() {
                 로그인
             </S.Button>
             <S.Perforation value="또는" />
-            <S.StyledLink to="/accounts/password/reset/">
+            <S.StyledLink to="/accounts/password/reset">
                 <S.Typography>비밀번호를 잊으셨나요?</S.Typography>
             </S.StyledLink>
         </S.Container>

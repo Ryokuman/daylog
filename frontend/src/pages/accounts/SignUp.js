@@ -1,4 +1,4 @@
-import * as S from "../../components";
+import * as S from "@components";
 import { useState } from "react";
 
 function SignUpCard() {
