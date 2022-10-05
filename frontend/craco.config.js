@@ -14,8 +14,9 @@ module.exports = {
                 aliases: {
                     "@components": "./src/components",
                     "@pages": "./src/pages",
-                    // "@store": "./src/store", (왜그런지는 모름)
+                    "@utils": "./src/utils",
                     "@assets": "./src/assets",
+                    "@hooks": "./src/hooks",
                 },
             },
         },

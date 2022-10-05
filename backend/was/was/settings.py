@@ -28,6 +28,8 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
+JWT_ALGORITHM = env('JWT_ALGORITHM')
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -59,7 +61,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000','http://localhost:3001']
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'was.urls'

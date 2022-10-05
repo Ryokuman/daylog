@@ -14,7 +14,12 @@ function ResetPasswordCard() {
 
     return (
         <S.Container width="350px" height="400px">
-            <S.ResetPasswordImg margin="17.5px auto 3px auto" />
+            <S.CustomIMG
+                img="resetPassword"
+                margin="17.5px auto 3px auto"
+                width="70px"
+                height="70px"
+            />
             <h4 style={{ margin: "5px 0px 0px 0px" }}>
                 로그인에 문제가 있나요?
             </h4>

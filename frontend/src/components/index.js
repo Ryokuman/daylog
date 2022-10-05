@@ -1,19 +1,10 @@
 import TextFiled from "./TextField";
 import Container from "./Container";
-import Logo from "./Logo";
+import CustomIMG from "./CustomIMG";
 import Button from "./Button";
 import Perforation from "./Perforation";
 import Typography from "./Typography";
 import StyledLink from "./StyledLink";
-import ResetPasswordImg from "./ResetPasswordImg";
+import Box from "./Box";
 
-export {
-    TextFiled,
-    Container,
-    Logo,
-    Button,
-    Perforation,
-    Typography,
-    StyledLink,
-    ResetPasswordImg,
-};
+export { TextFiled, Container, CustomIMG, Button, Perforation, Typography, StyledLink, Box };
