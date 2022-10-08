@@ -19,20 +19,20 @@ function SignUp() {
   const inputChecker = watcher.includes("") || watcher.includes(undefined) || Object.values(errors)[0];
 
   const onSubmit = async (data) => {
-    const result = await api.post(`/users/`, data);
+    await api.post(`/users/`, data);
     alert("회원가입 성공! 로그인 페이지로 이동합니다.");
-    navigate("/accounts/login");
+    navigate("/account/login");
   };
 
   return (
     <S.Container margin="130px auto">
       <S.Box width="350px" height="400px">
-        <S.CustomIMG margin="36px auto" img="logo" />
+        <S.CustomIMG margin="28px auto 36px auto" img="logo" />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <S.TextFiled placeholder="ID" {...register("id")} onChange={spaceRemover} />
-          <S.TextFiled onChange={spaceRemover} placeholder="Email" {...register("email")} />
-          <S.TextFiled onChange={spaceRemover} placeholder="Nick Name" {...register("nickName")} />
-          <S.TextFiled type="password" onChange={spaceRemover} placeholder="Password" {...register("password")} />
+          <S.TextField placeholder="ID" {...register("id")} onChange={spaceRemover} />
+          <S.TextField onChange={spaceRemover} placeholder="Email" {...register("email")} />
+          <S.TextField onChange={spaceRemover} placeholder="Nick Name" {...register("nickName")} />
+          <S.TextField type="password" onChange={spaceRemover} placeholder="Password" {...register("password")} />
           <S.Button
             width="258px"
             height="30px"
@@ -47,7 +47,7 @@ function SignUp() {
       </S.Box>
       <S.Box margin="25px auto" width="350px" height="63px" direction="row">
         <S.Typography>계정이 있으신가요?&nbsp;</S.Typography>
-        <S.StyledLink to="/accounts/login">
+        <S.StyledLink to="/account/login">
           <S.Typography>로그인</S.Typography>
         </S.StyledLink>
       </S.Box>

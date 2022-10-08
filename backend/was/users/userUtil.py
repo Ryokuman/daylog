@@ -21,9 +21,8 @@ def user_refresh_to_access(refresh_token):
     try:
         payload = jwt.decode(refresh_token, JWT_SECRET_KEY, algorithms=JWT_ALGORITHM)
         access_token = jwt.encode(
-            {'id': payload.get('id'), 'name': payload.get('name'), 'alias': payload.get('alias'),
-             'email': payload.get('email'), 'type': "access_token",
-             'exp': datetime.utcnow() + timedelta(minutes=5)}, JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
+            {'id': payload.get('id'), 'type': "access_token",
+             'exp': datetime.utcnow() + timedelta(minutes=30)}, JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
     except jwt.exceptions.ExpiredSignatureError or jwt.exceptions.DecodeError:
         return False
     return access_token
@@ -31,13 +30,13 @@ def user_refresh_to_access(refresh_token):
 
 def user_generate_access_token(user_data):
     return jwt.encode(
-        {'id': str(user_data.id), 'alias': user_data.alias, 'exp': datetime.utcnow() + timedelta(minutes=30),
+        {'id': str(user_data.id), 'exp': datetime.utcnow() + timedelta(minutes=30),
          'type': 'access_token'},
         JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
 
 
 def user_generate_refresh_token(user_data):
-    return jwt.encode({'id': str(user_data.id), 'alias': user_data.alias, 'exp': datetime.utcnow() + timedelta(days=7),
+    return jwt.encode({'id': str(user_data.id), 'exp': datetime.utcnow() + timedelta(days=7),
                        'type': "refresh_token"},
                       JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
 

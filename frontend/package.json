@@ -19,7 +19,6 @@
     "redux": "^4.2.0",
     "styled-components": "^5.3.5",
     "react-hook-form": "^7.36.1",
-    "web-vitals": "^3.0.2",
     "yup": "^0.32.11"
   },
   "scripts": {

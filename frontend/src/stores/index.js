@@ -1,4 +1,4 @@
 import { store } from "./store";
-import loginSlice from "./loginSlice";
+import tokenSlice from "./tokenSlice";
 
-export { store, loginSlice };
+export { store, tokenSlice };

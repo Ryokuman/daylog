@@ -1,20 +1,19 @@
 import { Route, Routes } from "react-router-dom";
-import { Login, SignUp, PasswordReset } from "@pages/accounts";
-import { Error } from "@pages/Error";
+import { Error, Test, Account, Main, Post } from "@pages";
+import { Header } from "@components";
 
 function App() {
-    return (
-        <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/accounts">
-                <Route index element={<Error />} />
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<SignUp />} />
-                <Route path="password/reset" element={<PasswordReset />} />
-            </Route>
-            <Route path="*" element={<Error />} />
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="account/*" element={<Account />} />
+      <Route path="*" element={<Error />} />
+      <Route element={<Header />}>
+        <Route path="post/*" element={<Post />} />
+        <Route path="test" element={<Test />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
