@@ -3,5 +3,5 @@ from . import views
 
 # rebikeuser/urls.py
 urlpatterns = [
-    path('', views.user),
+    path('', views.auth),
 ]

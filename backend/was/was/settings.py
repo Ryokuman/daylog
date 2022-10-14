@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +22,25 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-
 # SECURITY WARNING: don't run with debug turned on in production!
 
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+JWT_ALGORITHM = env('JWT_ALGORITHM')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
-JWT_ALGORITHM = env('JWT_ALGORITHM')
-JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+
+# s3
+AWS_STORAGE_BUCKET_NAME = env('BUCKET_NAME')
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_REGION = 'ap-northeast-2'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -48,6 +59,9 @@ INSTALLED_APPS = [
     'storages',
     # local apps
     'users',
+    'post',
+    'follow',
+    'comment'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +75,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000','http://localhost:3001']
+CORS_ORIGIN_WHITELIST = ['http://localhost', 'http://localhost:3000', 'http://localhost:8080']
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'was.urls'
@@ -114,11 +128,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_L10N = True
+
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

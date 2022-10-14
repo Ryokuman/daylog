@@ -8,6 +8,7 @@ import search from "@assets/pic/search.png";
 import success from "@assets/pic/success.png";
 import fullHeart from "@assets/pic/fullheart.png";
 import emptyHeart from "@assets/pic/emptyheart.png";
+import logout from "@assets/pic/logout.png";
 
 import styled from "styled-components";
 
@@ -22,6 +23,7 @@ function setSource(value) {
   else if (value === "success") return success;
   else if (value === "fullHeart") return fullHeart;
   else if (value === "emptyHeart") return emptyHeart;
+  else if (value === "logout") return logout;
   else return value;
 }
 

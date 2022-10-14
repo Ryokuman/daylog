@@ -1,19 +1,27 @@
 import * as S from "@components";
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import url from "@utils/url";
+import { tokenSlice } from "@stores";
+import { useDispatch } from "react-redux";
 
 const LinkImg = (props) => {
   return (
-    <a href={props.href}>
+    <a href={props.href} onClick={props.onClick}>
       <S.CustomIMG img={props.img} width="28px" height="28px" display="inline" margin="0 20px 0 0 " />
     </a>
   );
 };
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const onChange = (e) => setSearchValue(e.target.value);
+  const onClick = () => {
+    dispatch(tokenSlice.actions.deleteToken());
+    navigate("/");
+  };
 
   return (
     <div>
@@ -46,6 +54,7 @@ function Header() {
           <LinkImg img="notification" href="../notification/" />
           <LinkImg img="friends" href="../friends/" />
           <LinkImg img="explore" href="../search/" />
+          <LinkImg img="logout" onClick={onClick} />
         </S.Container>
       </S.Container>
       <Outlet />

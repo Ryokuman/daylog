@@ -1,9 +1,11 @@
-import * as S from "@components";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import * as S from "@components";
 import api from "@utils/api";
 import spaceRemover from "@utils/spaceRemover";
-import { yupResolver } from "@hookform/resolvers/yup";
 import signUpValidator from "./signUpValidator";
 
 function SignUp() {
@@ -17,12 +19,19 @@ function SignUp() {
 
   const watcher = watch(["id", "email", "nickName", "password"]);
   const inputChecker = watcher.includes("") || watcher.includes(undefined) || Object.values(errors)[0];
+  const errormessage = useRef(false);
 
   const onSubmit = async (data) => {
     await api.post(`/users/`, data);
     alert("회원가입 성공! 로그인 페이지로 이동합니다.");
     navigate("/account/login");
   };
+  const errorfinder = errors.id || errors.nickName || errors.email || errors.password;
+
+  if (errors.id) errormessage.current = errors.id.message;
+  if (errors.email) errormessage.current = errors.email.message;
+  if (errors.nickName) errormessage.current = errors.nickName.message;
+  if (errors.password) errormessage.current = errors.password.message;
 
   return (
     <S.Container margin="130px auto">
@@ -33,10 +42,15 @@ function SignUp() {
           <S.TextField onChange={spaceRemover} placeholder="Email" {...register("email")} />
           <S.TextField onChange={spaceRemover} placeholder="Nick Name" {...register("nickName")} />
           <S.TextField type="password" onChange={spaceRemover} placeholder="Password" {...register("password")} />
+          {errorfinder && (
+            <S.Typography color="#DF5659" margin="1.5px auto">
+              {errormessage.current}
+            </S.Typography>
+          )}
           <S.Button
             width="258px"
             height="30px"
-            margin="20px auto"
+            margin={errorfinder ? "0 auto 20px 0" : "20px auto"}
             type="submit"
             activate={!inputChecker}
             disabled={inputChecker}

@@ -4,7 +4,7 @@ import api from "@utils/api";
 
 const isDuplicate = async (data, ctx) => {
   const response = await api.get(`/users/?case=${ctx.path}&value=${data}`);
-  if (!response.data.result) return ctx.createError({ message: `중복된 ${ctx.path} 입니다.` });
+  if (response.data.result) return ctx.createError({ message: `중복된 ${ctx.path} 입니다.` });
   return true;
 };
 
@@ -13,21 +13,21 @@ const signUpValidator = object().shape({
     .min(5, "아이디가 너무 짧습니다.")
     .max(20, "아이디가 너무 깁니다.")
     .matches(idRegular, "아이디엔 영문, 숫자만 사용 가능합니다.")
-    .required()
+    .required("아이디를 입력해 주십시오")
     .test(isDuplicate),
-  email: string().email("옳지 않은 이메일입니다.").required().test(isDuplicate),
+  email: string().email("옳지 않은 이메일입니다.").required("이메일을 입력해 주십시오").test(isDuplicate),
   nickName: string()
     .min(5, "닉네임이 너무 짧습니다.")
     .max(20, "닉네임이 너무 깁니다.")
     .matches(nickNameRegular, "닉네임엔 특수문자 사용이 불가합니다.")
-    .required()
+    .required("닉네임을 입력해 주십시오")
     .test(isDuplicate),
   password: string()
     .matches(
       passwordRegular,
       "비밀번호는 특수문자, 숫자, 영어 대,소문자를 각각 1개씩 포함하여야하며, 8자 이상이여야 합니다"
     )
-    .required(),
+    .required("비밀번호를 입력해 주십시오"),
 });
 
 export default signUpValidator;

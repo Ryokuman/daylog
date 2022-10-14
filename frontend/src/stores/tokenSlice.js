@@ -10,11 +10,17 @@ const tokenSlice = createSlice({
   reducers: {
     accessToken: (state, action) => {
       state.accessToken = action.payload;
-      setCookie("accessDayLogToken", state.accessToken, 0.5);
+      setCookie("accessDayLogToken", state.accessToken, 2);
     },
     refreshToken: (state, action) => {
       state.refreshToken = action.payload;
       setCookie("refreshDayLogToken", state.refreshToken, 24 * 14);
+    },
+    deleteToken: (state) => {
+      state.refreshToken = null;
+      state.accessToken = null;
+      setCookie("refreshDayLogToken", state.refreshToken, 0);
+      setCookie("accessDayLogToken", state.accessToken, 0);
     },
   },
 });

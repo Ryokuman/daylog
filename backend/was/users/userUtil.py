@@ -1,47 +1,60 @@
-from datetime import datetime, timedelta
-
 import bcrypt
-import jwt
-
-from was.settings import JWT_SECRET_KEY, JWT_ALGORITHM
 from .models import user
 
 
-def user_token_to_data(token):
-    try:
-        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=JWT_ALGORITHM)
-    except jwt.exceptions.ExpiredSignatureError:
-        return "Expired_Token"
-    except jwt.exceptions.DecodeError:
-        return "Invalid_Token"
-    return payload
-
-
-def user_refresh_to_access(refresh_token):
-    try:
-        payload = jwt.decode(refresh_token, JWT_SECRET_KEY, algorithms=JWT_ALGORITHM)
-        access_token = jwt.encode(
-            {'id': payload.get('id'), 'type': "access_token",
-             'exp': datetime.utcnow() + timedelta(minutes=30)}, JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
-    except jwt.exceptions.ExpiredSignatureError or jwt.exceptions.DecodeError:
+# duplicate check
+def user_is_duplicate_user_id(user_id):
+    result = user.objects.filter(user_id=user_id)
+    if result:
+        return True
+    else:
         return False
-    return access_token
 
 
-def user_generate_access_token(user_data):
-    return jwt.encode(
-        {'id': str(user_data.id), 'exp': datetime.utcnow() + timedelta(minutes=30),
-         'type': 'access_token'},
-        JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
+def user_is_duplicate_nick_name(nick_name):
+    result = user.objects.filter(nick_name=nick_name)
+    if result:
+        return True
+    else:
+        return False
 
 
-def user_generate_refresh_token(user_data):
-    return jwt.encode({'id': str(user_data.id), 'exp': datetime.utcnow() + timedelta(days=7),
-                       'type': "refresh_token"},
-                      JWT_SECRET_KEY, JWT_ALGORITHM).decode('utf-8')
+def user_is_duplicate_email(email):
+    result = user.objects.filter(email=email)
+    if result:
+        return True
+    else:
+        return False
 
 
-# Password Hashing
+# user data update
+def user_update_user_id(user_pk, user_id):
+    user.objects.get(user_pk=user_pk).update(user_id=user_id)
+    return True
+
+
+def user_update_nick_name(user_pk, nick_name):
+    user.objects.get(user_pk=user_pk).update(nick_name=nick_name)
+    return True
+
+
+def user_update_email(user_pk, email):
+    user.objects.get(user_pk=user_pk).update(email=email)
+    return True
+
+
+# return finder
+def user_find_by_pk(user_pk):
+    user_data = user.objects.get(user_pk=user_pk)
+    return user_data
+
+
+def user_find_by_user_id(user_id):
+    user_data = user.objects.get(user_id=user_id)
+    return user_data
+
+
+# password
 def user_hash_password(password):
     password = str(password).encode('utf-8')
     salt = bcrypt.gensalt()
@@ -49,62 +62,24 @@ def user_hash_password(password):
     return hash_password, salt
 
 
-class UserDuplicateCheck:
-    @staticmethod
-    def alias(alias):
-        if user_find_by_alias(alias):
-            return False
-        return True
-
-    @staticmethod
-    def email(email):
-        if user_find_by_email(email):
-            return False
-        return True
-
-    @staticmethod
-    def name(name):
-        if user_find_by_name(name):
-            return False
-        return True
-
-
-def user_change_value(value, alias):
-    user_data = user_find_by_alias(alias).first()
-
-    if value.get('password'):
-        hash_password, salt = user_hash_password(value.get('password'))
-        user_data.password = hash_password
-        user_data.salt = salt
-        # value.update({"password": hash_password, "salt": salt})
-    elif value.get('alias'):
-        user_data.alias = value.get('alias')
-    user_data.save()
-    return user_data
-
-
-def user_find_by_id(user_id):
-    return user.objects.filter(id=user_id)
-
-
-def user_find_by_name(name):
-    return user.objects.filter(name=name)
-
-
-def user_find_by_alias(alias):
-    return user.objects.filter(alias=alias)
-
-
-def user_find_by_email(email):
-    return user.objects.filter(email=email)
-
-
-def user_create_client(name, email, password, alias):
-    hash_password, salt = user_hash_password(password)
-    return user.objects.create(name=name, alias=alias, password=hash_password, salt=salt, email=email)
-
-
-def user_comppassword(password, user_data):
+def user_password_check(password, user_data):
     password = str(password).encode('utf-8')
     hash_password = bcrypt.hashpw(password, user_data.salt)
-    return hash_password == user_data.password
+    result = hash_password == user_data.password
+    return result
+
+
+# user creator
+def user_create(user_data):
+    user.objects.create(**user_data)
+    return True
+
+
+# user delete
+def user_delete(user_pk):
+    user_data = user.objects.get(user_pk=user_pk)
+    if user_data:
+        user_data.delete()
+        return True
+    else:
+        return False
