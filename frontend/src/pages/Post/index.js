@@ -9,6 +9,7 @@ function Post() {
     <Routes>
       <Route path="*">
         <Route index element={<Profile />} />
+        <Route path=":userId" element={<Profile />} />
         <Route path="detail">
           <Route path=":postId" element={<Detail />} />
         </Route>

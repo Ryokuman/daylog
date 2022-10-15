@@ -31,9 +31,10 @@ def comment_get(request):
 
 
 def comment_post(request):
-    post_pk = uuid.UUID(request.data['postId'])
-    contents = request.data['contents']
     token = request.META['HTTP_AUTHORIZATION']
+    contents = request.data.get('contents')
+    raw_post_pk = request.data['postId']
+    post_pk = uuid.UUID(raw_post_pk)
 
     is_valid = auth_is_valid_token(token)
     if is_valid["result"]:
@@ -43,6 +44,8 @@ def comment_post(request):
             comment_data = {
                 'post': post_data,
                 'author': user_data,
+                'user_id': user_data.user_id,
+                'image': user_data.image,
                 'contents': contents
             }
             comment_create(comment_data)
@@ -69,7 +72,8 @@ def comment_patch(request):
 
 
 def comment_del(request):
-    comment_pk = uuid.UUID(request.data['commentId'])
+    raw_comment_pk = request.data['commentId']
+    comment_pk = uuid.UUID(raw_comment_pk)
     token = request.META['HTTP_AUTHORIZATION']
 
     is_valid = auth_is_valid_token(token)

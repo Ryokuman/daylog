@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getUserData from "@utils/getUserData";
+import { getUserDataByToken } from "@utils/getUserData";
 
 const getInitialState = createAsyncThunk("user/getInitialState", async (token) => {
-  const resp = await getUserData(token);
+  const resp = await getUserDataByToken(token);
   const result = await resp;
   return result;
 });

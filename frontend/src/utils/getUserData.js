@@ -1,6 +1,6 @@
 import api from "./api";
 
-async function getUserData(token) {
+async function getUserDataByToken(token) {
   let result;
 
   const accessHeader = {
@@ -28,4 +28,9 @@ async function getUserData(token) {
   return result?.data.userData;
 }
 
-export default getUserData;
+async function getUserDataById(userId) {
+  const result = await api.get(`/users/?case=userId&value=${userId}`);
+  return await result?.data;
+}
+
+export { getUserDataByToken, getUserDataById };

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const Button = styled.button.attrs((props) => ({ id: props.id }))`
   cursor: ${(props) => props.activate || "auto"};
   opacity: ${(props) => (props.activate ? "1" : "0.5")};
   background-color: ${(props) => props.color || "#4193EF"};

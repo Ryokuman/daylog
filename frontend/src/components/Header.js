@@ -22,6 +22,7 @@ function Header() {
     dispatch(tokenSlice.actions.deleteToken());
     navigate("/");
   };
+  const onSubmit = () => navigate(`../post/${searchValue}`);
 
   return (
     <div>
@@ -39,7 +40,7 @@ function Header() {
           margin="10px"
         >
           <S.CustomIMG img="search" width="20px" height="20px" margin="0 0 0 10px" />
-          <form action={`../search/${searchValue}`}>
+          <S.CustomForm onSubmit={onSubmit}>
             <S.TextField
               onChange={onChange}
               width="350px"
@@ -48,7 +49,7 @@ function Header() {
               margin="2px 5px 2px 3px"
               placeholder="검색"
             />
-          </form>
+          </S.CustomForm>
         </S.Box>
         <S.Container direction="row" margin="0 80px 0 0">
           <LinkImg img="notification" href="../notification/" />

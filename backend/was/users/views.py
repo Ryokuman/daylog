@@ -1,8 +1,14 @@
+import uuid
+
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from .userUtil import user_is_duplicate_user_id, user_is_duplicate_nick_name, user_is_duplicate_email, user_create, \
-    user_update_nick_name, user_update_email, user_update_user_id, user_hash_password, user_delete
+from rest_framework.response import Response
 from auth.authUtil import auth_is_valid_token, auth_token_to_data
+
+from .userUtil import user_is_duplicate_user_id, user_is_duplicate_nick_name, user_is_duplicate_email, user_create, \
+    user_update_nick_name, user_update_email, user_update_user_id, user_hash_password, user_delete, user_find_by_pk, \
+    user_find_by_user_id
+from .serializers import CommentSerializer
 
 
 @api_view(['GET', 'POST', 'PATCH', 'DELETE'])
@@ -30,6 +36,19 @@ def user_is_duplicate(request):
     elif request_type == 'email':
         result = user_is_duplicate_email(value)
         return JsonResponse({"result": result}, status=200)
+    elif request_type == 'userPk':
+        user_pk = uuid.UUID(value)
+        user_data = user_find_by_pk(user_pk)
+        return Response(CommentSerializer(user_data).data)
+    elif request_type == 'userId':
+        user_data = user_find_by_user_id(value)
+        return_data = {
+            "uuid": user_data.user_pk,
+            "id": user_data.user_id,
+            "nickName": user_data.nick_name,
+            "email": user_data.email
+        }
+        return JsonResponse({"result": True, "userData": return_data})
     else:
         return JsonResponse({"result": False, "message": "invalid value"}, status=401)
 

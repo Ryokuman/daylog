@@ -9,6 +9,8 @@ class comment(models.Model):
     post = models.ForeignKey(post, on_delete=models.CASCADE)
     author = models.ForeignKey(user, on_delete=models.CASCADE)
     contents = models.CharField(max_length=300)
+    user_id = models.CharField(max_length=20)
+    image = models.CharField(max_length=1024, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
